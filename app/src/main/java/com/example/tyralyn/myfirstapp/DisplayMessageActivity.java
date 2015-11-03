@@ -16,7 +16,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.List;
+
 public class DisplayMessageActivity extends AppCompatActivity {
+    //public static List<AddressBookContact> addressBook;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +34,21 @@ public class DisplayMessageActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
         textView.setTextSize(10);
 
-        //instantiate class that will process 
+        //instantiate class that will process
         final AddressBookUnpacker unpacker = new AddressBookUnpacker();
-        //textView.setText(message);
+
+        //obtain text from URL with Volle RequestQ
         RequestQueue q = Volley.newRequestQueue(this);
        // String url = "https://solstice.applauncher.com/external/contacts.json";
-        String url = "https://solstice.applauncher.com/external/Contacts/id/1.json";
+        final String url = "https://solstice.applauncher.com/external/Contacts/id/1.json";
         StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //textView.setText("on the website: " + response.substring(0, 100));
-                unpacker.testle(response);
+
+                //unpack/parse JSON data form webpage
+                unpacker.testle(url);
+
+                //set up what's going to happen with with the parsed text
                 textView.setText(unpacker.testString);
             }
         }, new Response.ErrorListener() {
@@ -49,7 +57,10 @@ public class DisplayMessageActivity extends AppCompatActivity {
                 textView.setText("couldn't find it :(");
             }
         });
+
+        //send request
         q.add(stringRequest);
+        //set content
         setContentView(textView);
 
     }

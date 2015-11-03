@@ -20,9 +20,10 @@ public class AddressBookUnpacker {
         //mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {
             //AddressBookContact contact = mapper.readValue(string, AddressBookContact.class);
-            AddressBookDetail detail = mapper.readValue(string, AddressBookDetail.class);
+            AddressBookDetail detail = mapper.readValue(new URL(url), AddressBookDetail.class);
             //System.out.println(contact.name);
             testString = detail.getEmail();
+            System.out.println(detail);
         } catch (IOException e) {
             e.printStackTrace();
             testString = "IO exception";
