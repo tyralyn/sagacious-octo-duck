@@ -29,17 +29,19 @@ public class DisplayMessageActivity extends AppCompatActivity {
         //create textview object
         final TextView textView = new TextView(this);
         textView.setTextSize(10);
-        AddressBookUnpacker unpacker = new AddressBookUnpacker();
-        unpacker.testle();
-        textView.setText(unpacker.testString);
-        //textView.setText(message);
-        /*RequestQueue q = Volley.newRequestQueue(this);
-        String url = "https://solstice.applauncher.com/external/contacts.json";
 
+        //instantiate class that will process 
+        final AddressBookUnpacker unpacker = new AddressBookUnpacker();
+        //textView.setText(message);
+        RequestQueue q = Volley.newRequestQueue(this);
+       // String url = "https://solstice.applauncher.com/external/contacts.json";
+        String url = "https://solstice.applauncher.com/external/Contacts/id/1.json";
         StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                textView.setText("on the website: " + response.substring(0, 100));
+                //textView.setText("on the website: " + response.substring(0, 100));
+                unpacker.testle(response);
+                textView.setText(unpacker.testString);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -47,9 +49,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
                 textView.setText("couldn't find it :(");
             }
         });
-        q.add(stringRequest);*/
-        //set text view to activity layout
-
+        q.add(stringRequest);
         setContentView(textView);
 
     }
