@@ -29,8 +29,11 @@ public class DisplayMessageActivity extends AppCompatActivity {
         //create textview object
         final TextView textView = new TextView(this);
         textView.setTextSize(10);
-
-        RequestQueue q = Volley.newRequestQueue(this);
+        AddressBookUnpacker unpacker = new AddressBookUnpacker();
+        unpacker.testle();
+        textView.setText(unpacker.testString);
+        //textView.setText(message);
+        /*RequestQueue q = Volley.newRequestQueue(this);
         String url = "https://solstice.applauncher.com/external/contacts.json";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
@@ -44,8 +47,9 @@ public class DisplayMessageActivity extends AppCompatActivity {
                 textView.setText("couldn't find it :(");
             }
         });
-        q.add(stringRequest);
+        q.add(stringRequest);*/
         //set text view to activity layout
+
         setContentView(textView);
 
     }

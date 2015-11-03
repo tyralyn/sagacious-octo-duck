@@ -4,6 +4,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
     defaultConfig {
         applicationId "com.example.tyralyn.myfirstapp"
         minSdkVersion 8
@@ -24,4 +29,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
+    compile files('libs/jackson-databind-2.6.0-rc4.jar')
+    compile files('libs/jackson-databind-2.6.3.jar')
+    compile files('libs/jackson-core-2.7.0-20151027.181328-22.jar')
+    compile files('libs/jackson-annotations-2.6.0.jar')
 }
