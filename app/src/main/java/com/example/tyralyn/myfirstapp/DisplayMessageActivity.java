@@ -19,62 +19,69 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 //Class that handles initial processing of JSON data
 public class DisplayMessageActivity extends AppCompatActivity {
 
-    public static List<AddressBookContact> addressBook;
+    public List<AddressBookContact> addressBook;
     public static ObjectMapper mapper = new ObjectMapper();
+    public TextView textView;
+    public RequestQueue q;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        addressBook = new ArrayList<AddressBookContact>();
 
         //get message from intent
         Intent intent = getIntent();
         String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
-        String s;
         //create textview object
-        final TextView textView = new TextView(this);
+        textView = new TextView(this);
         textView.setTextSize(10);
 
         //set up new Volley RequestQ
-        RequestQueue q = Volley.newRequestQueue(this);
+        q = Volley.newRequestQueue(this);
         String url = "https://solstice.applauncher.com/external/contacts.json";
+        //
+        q.add(getAddressBookContacts(url));
+        textView.setText(addressBook.get(0).getDetailsURL());
+        setContentView(textView);
 
     }
 
     private StringRequest getAddressBookContacts(String url) {
-
         //set up request for string data obtained via Volley
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
-
             //if string data is recieved, use jackson objectmapper to bind to addressbook
             public void onResponse(String response) {
                 //unpack/parse JSON data form webpage
                 try {
-                    addressBook = mapper.readValue(response, new TypeReference<List<AddressBookContact>>() {
+                    List<AddressBookContact> l = mapper.readValue(response, new TypeReference<List<AddressBookContact>>() {
                     });
+                    for (int i = 0; i < l.size(); i++) {
+                        addressBook.add(l.get(i));
+                    }
+                    textView.setText(addressBook.get(0).getCompany());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    textView.setText("IO exception");
                 }
-
                 //set up what's going to happen with with the parsed text
-                textView.setText(addressBook.get(2).getCompany());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                textView.setText("couldn't find it :(");
+                textView.setText("noResponseContent");
             }
         });
+        return stringRequest;
+    }
 
+   /*private List<StringRequest> getAddressBookDetails(String url) {
         //send request for data from contact list json file
-        q.add(stringRequest);
-
         if (addressBook != null) {
             if (!addressBook.isEmpty()) {
                 for (int i = 0; i < addressBook.size(); i++) {
@@ -112,6 +119,6 @@ public class DisplayMessageActivity extends AppCompatActivity {
 
         setContentView(textView);
 
-    }
+    }*/
 
 }
