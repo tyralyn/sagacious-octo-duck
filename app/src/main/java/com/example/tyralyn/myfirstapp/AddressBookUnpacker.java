@@ -1,6 +1,8 @@
 package com.example.tyralyn.myfirstapp;
 
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -16,8 +18,13 @@ import java.util.List;
  */
 public class AddressBookUnpacker {
     public static String testString;
+    public static ObjectMapper mapper;
+    public RequestQueue q;
+
     public void testle(String string,  List<AddressBookContact> addressBook, ObjectMapper mapper) {
         String url = "https://solstice.applauncher.com/external/contacts.json";
+        mapper = new ObjectMapper();
+       // Volley.newRequestQueue(this);
         //mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {
             //AddressBookContact contact = mapper.readValue(string, AddressBookContact.class);

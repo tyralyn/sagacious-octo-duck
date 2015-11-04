@@ -25,7 +25,7 @@ import java.util.List;
 //Class that handles initial processing of JSON data
 public class DisplayMessageActivity extends AppCompatActivity {
 
-    public List<AddressBookContact> addressBook;
+    public static List<AddressBookContact> addressBook;
     public static ObjectMapper mapper = new ObjectMapper();
     public TextView textView;
     public RequestQueue q;
@@ -47,12 +47,11 @@ public class DisplayMessageActivity extends AppCompatActivity {
         String url = "https://solstice.applauncher.com/external/contacts.json";
         //
         q.add(getAddressBookContacts(url));
-        textView.setText(addressBook.get(0).getDetailsURL());
         setContentView(textView);
 
     }
 
-    private StringRequest getAddressBookContacts(String url) {
+    public StringRequest getAddressBookContacts(String url) {
         //set up request for string data obtained via Volley
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -60,12 +59,9 @@ public class DisplayMessageActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 //unpack/parse JSON data form webpage
                 try {
-                    List<AddressBookContact> l = mapper.readValue(response, new TypeReference<List<AddressBookContact>>() {
+                    addressBook = mapper.readValue(response, new TypeReference<List<AddressBookContact>>() {
                     });
-                    for (int i = 0; i < l.size(); i++) {
-                        addressBook.add(l.get(i));
-                    }
-                    textView.setText(addressBook.get(0).getCompany());
+                    textView.setText(addressBook.get(addressBook.size()-1).getCompany());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
